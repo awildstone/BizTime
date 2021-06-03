@@ -1,0 +1,16 @@
+{
+  "name": "biztime",
+  "version": "1.0.0",
+  "description": "A REST-ful backend API server for a simple company invoice tracker.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Aimee Wildstone",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
+  }
+}
