@@ -5,12 +5,14 @@ const app = express();
 const ExpressError = require("./expressError");
 const cRoutes = require('./routes/companies');
 const iRoutes = require('./routes/invoices');
+const inRoutes = require('./routes/industries');
 
 // middleware to parse request body as JSON
 app.use(express.json());
 
 app.use('/companies', cRoutes);
 app.use('/invoices', iRoutes);
+app.use('/industries', inRoutes);
 
 /** 404 handler */
 

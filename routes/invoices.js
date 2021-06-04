@@ -11,7 +11,7 @@ const db = require('../db');
 
 router.get('/', async function(req, res, next) {
     try {
-        const allInvoices = await db.query('SELECT id, comp_code FROM invoices');
+        const allInvoices = await db.query('SELECT id, comp_code FROM invoices ORDER BY id');
         return res.json({ invoices: allInvoices.rows })
     } catch (e) {
         return next(e)
@@ -64,7 +64,7 @@ router.post('/', async function(req, res, next) {
         const response = await db.query(`INSERT INTO invoices (comp_code, amt)
         VALUES ($1, $2)
         RETURNING *`, [req.body.comp_code, req.body.amt]);
-        return res.status(201).json({ invoices: response.rows[0] })
+        return res.status(201).json({ invoice: response.rows[0] })
     } catch (e) {
         return next(e)
     }
@@ -90,7 +90,7 @@ router.put('/:id', async function(req, res, next) {
             throw new ExpressError(`Invoice ${req.params.id} doesn't exist!`, 404);
         }
         //get the current date, this will be the new paid_date
-        const today = (new Date()).toLocaleString("en-US");
+        const today = new Date();
         //subtract the current payment from the current invoice amount, this will be the new invoice total
         let newAmt = currAmt.rows[0].amt - req.body.amt;
         //if the invoice still has an amt balance, set paid to false, else paid will be true
@@ -100,7 +100,7 @@ router.put('/:id', async function(req, res, next) {
         SET amt=$1, paid=$2, paid_date=$3
         WHERE id=$4
         RETURNING *`, [newAmt, paid, today, req.params.id]);
-       return res.json({ invoices: response.rows[0] }) 
+       return res.json({ invoice: response.rows[0] }) 
     } catch (e) {
         return next(e)
     }
