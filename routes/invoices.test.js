@@ -63,27 +63,18 @@ describe('GET /invoices/id', () => {
     test('Returns invoice with matching id.', async () => {
         const res = await request(app).get(`/invoices/${invoice1.id}`);
         expect(res.statusCode).toEqual(200);
-        // console.log(res.body)
-        // expect(res.body).toEqual({ invoice: {
-        //     id: invoice1.id,
-        //     amt: invoice1.amt,
-        //     paid: invoice1.paid,
-        //     add_date: invoice1.add_date,
-        //     paid_date: invoice1.paid_date,
-        //     company: {
-        //         code: testCompany1.code,
-        //         name: testCompany1.name,
-        //         description: testCompany1.description }
-        //     }
-        // });
-        expect(res.body.invoice.id).toEqual(invoice1.id);
-        expect(res.body.invoice.amt).toEqual(invoice1.amt);
-        expect(res.body.invoice.paid).toEqual(invoice1.paid);
-        // expect(res.body.invoice.add_date).toEqual(invoice1.add_date); //this is failing I'm not sure why my expected value is a Date() obj when my middleware function to convert to JSON should be working here too.
-        expect(res.body.invoice.paid_date).toEqual(invoice1.paid_date);
-        expect(res.body.invoice.company.code).toEqual(testCompany1.code);
-        expect(res.body.invoice.company.name).toEqual(testCompany1.name);
-        expect(res.body.invoice.company.description).toEqual(testCompany1.description);
+        expect(res.body).toEqual({ invoice: {
+            id: invoice1.id,
+            amt: invoice1.amt,
+            paid: invoice1.paid,
+            add_date: invoice1.add_date.toISOString(),
+            paid_date: invoice1.paid_date,
+            company: {
+                code: testCompany1.code,
+                name: testCompany1.name,
+                description: testCompany1.description }
+            }
+        });
     });
 
     test('Returns 404 for invoice that does not exist.', async () => {
